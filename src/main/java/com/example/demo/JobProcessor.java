@@ -12,7 +12,7 @@ public class JobProcessor {
     private JobRepository jobRepository;
     
     @Scheduled(fixedDelay = 5000)
-    public void processJobs() {
+    public synchronized void processJobs() {
         List<Job> pendingJobs = jobRepository.findByStatus(JobStatus.PENDING);
 
         for (Job job : pendingJobs) {
@@ -24,6 +24,9 @@ public class JobProcessor {
             } catch (InterruptedException e) {
                 
                 e.printStackTrace();
+                job.setStatus(JobStatus.FAILED);
+                jobRepository.save(job);
+                continue;
             }
             job.setStatus(JobStatus.COMPLETED);
             jobRepository.save(job);

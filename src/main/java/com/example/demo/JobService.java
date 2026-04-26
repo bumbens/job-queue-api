@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JobService {
-    private static final LocalDateTime LocalDateTime = null;
     @Autowired
     private JobRepository jobRepository;
 
@@ -18,6 +17,7 @@ public class JobService {
 
     public Job createJob(Job job) {
         job.setCreatedAt(LocalDateTime.now());
+        job.setStatus(JobStatus.PENDING);
         return jobRepository.save(job);
     }
 
@@ -29,13 +29,16 @@ public class JobService {
         jobRepository.deleteById(id);
     }
 
+    public List<Job> getJobByStatus(JobStatus status) {
+        return jobRepository.findByStatus(status);
+    }
+
     public Job updateJob(Long id, Job updatedJob) {
         Job job = jobRepository.findById(id).orElseThrow(() -> new JobNotFoundException(id));
         job.setName(updatedJob.getName());
         job.setDescription(updatedJob.getDescription());
         job.setPriority(updatedJob.getPriority());
         job.setStatus(updatedJob.getStatus());
-        job.setCreatedAt(LocalDateTime.now());
         job.setDueDate(updatedJob.getDueDate());
         return jobRepository.save(job);
     }

@@ -19,12 +19,13 @@ public class Job {
     private String description;
     @Enumerated(EnumType.STRING)
     private Priority priority;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private JobStatus status;
     private LocalDateTime createdAt;
     private LocalDate dueDate;
 
 
-    public Job(Long id, String name, String description, Priority priority, String status, LocalDateTime createdAt,
+    public Job(Long id, String name, String description, Priority priority, JobStatus status, LocalDateTime createdAt,
             LocalDate dueDate) {
         this.id = id;
         this.name = name;
@@ -62,10 +63,10 @@ public class Job {
     public void setPriority(Priority priority) {
         this.priority = priority;
     }
-    public String getStatus() {
+    public JobStatus getStatus() {
         return status;
     }
-    public void setStatus(String status) {
+    public void setStatus(JobStatus status) {
         this.status = status;
     }
     public LocalDateTime getCreatedAt() {
